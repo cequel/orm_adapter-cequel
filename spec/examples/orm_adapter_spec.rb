@@ -55,6 +55,16 @@ describe Cequel::Record::OrmAdapter do
       post_adapter.find_first(conditions: {blog_subdomain: 'postgres'})
         .should == other_post
     end
+    
+    it 'should find first when there is only a single record present' do
+      expect(blog_adapter.find_first(conditions: { subdomain: 'cassandra' }))
+        .to eq(blog)
+    end
+
+    it 'should return nil if no record could be found' do
+      expect(blog_adapter.find_first(conditions: { subdomain: 'nope' }))
+        .to be_nil
+    end
 
     it 'should find first with secondary index condition' do
       post_adapter.find_first(conditions: {author_id: 1})
