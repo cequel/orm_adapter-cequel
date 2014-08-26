@@ -58,7 +58,12 @@ module Cequel
       #   none present
       #
       def find_first(options = {})
-        construct_scope(options).first
+        scope = construct_scope(options)
+        if scope.is_a?(Record)
+          scope.exists? ? scope : nil
+        else
+          scope.first
+        end
       end
 
       #
